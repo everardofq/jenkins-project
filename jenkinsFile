@@ -2,9 +2,19 @@ pipeline{
     agent{label 'master'}
     tools{maven 'M3.8.4'}
     stages{
+        stage('Maven-Version'){
+            steps{
+                bat 'mvn --version'
+            }
+        }
         stage('Git-Checkout'){
             steps{
                 git branch: 'master', url: 'https://github.com/everardofq/jenkins-project.git'    
+            }
+        }
+        stage('Clean'){
+            steps{
+                bat 'mvn clean'
             }
         }
         stage('Compile'){
@@ -24,7 +34,7 @@ pipeline{
         }
         stage('Deploy-to-CloudHub'){
             steps{
-                bat 'mvn clean install deploy -DmuleDeploy -DskipTests'
+                bat 'mvn deploy -DmuleDeploy -DskipTests'
             }
         }
     }
